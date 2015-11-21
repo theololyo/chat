@@ -20,12 +20,12 @@ import javax.swing.JTextArea;
  * 
  * @author Thomas Ejnefjall
  */
-public class ChatGUI extends JFrame {
+public class ChatGUI extends JFrame implements Subscriber {
 
 	private static final long serialVersionUID = -6901406569465760897L;
 	private JTextArea mChatArea, mMessageArea;
 	private JButton mSendButton;
-	private UDPChatCommunicator mCommunicator;
+	private DataSender mDs;
 	private String mUser;
 
 	/**
@@ -35,11 +35,10 @@ public class ChatGUI extends JFrame {
 	 */
 	public ChatGUI(String userName) {
 		this.setTitle("Simple Chat - " + userName);
+                mDs = new DataSender();
 		mUser = userName;
-		mCommunicator = new UDPChatCommunicator(this);
 		this.initializeGUI();
 		this.addGUIListeners();		
-		mCommunicator.startListen();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	/**
@@ -63,6 +62,7 @@ public class ChatGUI extends JFrame {
 
 		this.setSize(200, 500);
 		this.setResizable(false);
+ 
 	}
 	/**
 	 * Adds GUI related listeners
@@ -87,7 +87,7 @@ public class ChatGUI extends JFrame {
 	 */
 	private void sendMessage() {
 		try {
-			mCommunicator.sendChat(mUser, mMessageArea.getText());
+			mDs.sendChat(mUser, mMessageArea.getText());
 			mMessageArea.setText("");
 			mMessageArea.grabFocus();			
 		} catch (IOException e) {			
@@ -112,4 +112,10 @@ public class ChatGUI extends JFrame {
 		this.dispose();
 		System.exit(ERROR);		
 	}
+
+    @Override
+    public void update(String message) {
+        receiveMessage(message);
+        System.out.println(message);
+    }
 }
