@@ -1,5 +1,6 @@
 package chat;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,6 +28,11 @@ public class ChatMain {
 		while(userName == null || userName.length() < 1) {
 			userName = JOptionPane.showInputDialog(null, "Enter your name", "Name", JOptionPane.QUESTION_MESSAGE);
 		}
-		new ChatGUI(userName).setVisible(true);
+		ChatGUI cg = new ChatGUI(userName);
+                cg.setVisible(true);
+                UDPChatCommunicator n = new UDPChatCommunicator();
+                n.attach(cg);
+                n.attach(new SubscriberLogger());
+                n.run();
 	}
 }
