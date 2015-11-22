@@ -5,15 +5,17 @@
  */
 package chat;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author Markovic
  */
-public class SubscriberLogger implements Subscriber {
+public class SubscriberConsoleLogger implements Subscriber {
 
     @Override
     public void update(String message) {
-        System.out.println("Logg: " + message);
+        System.out.println("[" + LocalDateTime.now() + "]" + " " + message);
     }
-    
+
 }

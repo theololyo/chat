@@ -26,7 +26,7 @@ public class DataSender {
      * @param message Text message to send
      * @throws IOException If there is an IO error
      */
-    public void sendChat(String sender, String message) throws IOException {
+    public void broadcast(String sender, String message) throws IOException {
 
         DatagramSocket socket = new DatagramSocket();
         String toSend = sender + ": " + message;

@@ -87,7 +87,7 @@ public class ChatGUI extends JFrame implements Subscriber {
 	 */
 	private void sendMessage() {
 		try {
-			mDs.sendChat(mUser, mMessageArea.getText());
+			mDs.broadcast(mUser, mMessageArea.getText());
 			mMessageArea.setText("");
 			mMessageArea.grabFocus();			
 		} catch (IOException e) {			
@@ -107,7 +107,6 @@ public class ChatGUI extends JFrame implements Subscriber {
 	 */
 	public void error() {		
 		JOptionPane.showMessageDialog(this, "An error has occured and the application will close", "Error", JOptionPane.WARNING_MESSAGE);
-
 		this.setVisible(false);
 		this.dispose();
 		System.exit(ERROR);		
@@ -116,6 +115,5 @@ public class ChatGUI extends JFrame implements Subscriber {
     @Override
     public void update(String message) {
         receiveMessage(message);
-        System.out.println(message);
     }
 }

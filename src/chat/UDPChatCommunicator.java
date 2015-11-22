@@ -28,7 +28,6 @@ public class UDPChatCommunicator implements Runnable, Notifier {
      */
     public UDPChatCommunicator() {
         mSubscribers = new ArrayList<Subscriber>();
-
     }
 
     /**
@@ -72,7 +71,6 @@ public class UDPChatCommunicator implements Runnable, Notifier {
     @Override
     public void attach(Subscriber s) {
         mSubscribers.add(s);
-        System.out.println("added");
     }
 
     @Override
