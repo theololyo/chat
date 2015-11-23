@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author Thomas Ejnefjall
  */
-public class UDPChatCommunicator implements Runnable, Notifier {
+public class UDPChatNotifier implements Runnable, Notifier {
 
     private final int DATAGRAM_LENGTH = 100;
     private final int PORT = 6789;
@@ -26,7 +26,7 @@ public class UDPChatCommunicator implements Runnable, Notifier {
      * Creates a ChatCommunicator
      *
      */
-    public UDPChatCommunicator() {
+    public UDPChatNotifier() {
         mSubscribers = new ArrayList<Subscriber>();
     }
 
@@ -48,13 +48,12 @@ public class UDPChatCommunicator implements Runnable, Notifier {
 
         try (MulticastSocket socket = new MulticastSocket(PORT)) {
             socket.joinGroup(InetAddress.getByName(MULTICAST_ADDRESS));
-
             while (true) {
                 socket.receive(datagram);
                 String message = new String(datagram.getData());
                 message = message.substring(0, datagram.getLength());
                 datagram.setLength(b.length);
-                this.notifySubscribers(message);
+                this.notifySubscribers(new MessagePacket(message, false));
             }
         }
     }
@@ -64,24 +63,24 @@ public class UDPChatCommunicator implements Runnable, Notifier {
         try {
             this.listenForMessages();
         } catch (IOException e) {
-            notifySubscribers(e.getMessage());
+            notifySubscribers(new MessagePacket("Error " + e.toString(), true));
         }
     }
 
     @Override
-    public void attach(Subscriber s) {
-        mSubscribers.add(s);
+    public void subscribe(Subscriber subscriber) {
+        mSubscribers.add(subscriber);
     }
 
     @Override
-    public void detach(Subscriber s) {
-        mSubscribers.remove(s);
+    public void unsubscribe(Subscriber subscriber) {
+        mSubscribers.remove(subscriber);
     }
 
     @Override
-    public void notifySubscribers(String message) {
+    public void notifySubscribers(MessagePacket messagepacket) {
         for (Subscriber mSubscriber : mSubscribers) {
-            mSubscriber.update(message);
+            mSubscriber.update(messagepacket);
         }
     }
 }

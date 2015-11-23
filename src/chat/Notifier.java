@@ -11,8 +11,8 @@ package chat;
  */
 public interface Notifier {
     
-    public void attach(Subscriber s);
-    public void detach(Subscriber s);
-    public void notifySubscribers(String message);
+    public void subscribe(Subscriber subscriber);
+    public void unsubscribe(Subscriber subscriber);
+    public void notifySubscribers(MessagePacket message);
     
 }

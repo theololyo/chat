@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
  *
  * @author Markovic
  */
-public class SubscriberConsoleLogger implements Subscriber {
+public class ConsoleLoggerSubscriber implements Subscriber {
 
     @Override
-    public void update(String message) {
-        System.out.println("[" + LocalDateTime.now() + "]" + " " + message);
+    public void update(MessagePacket messagePacket) {
+        System.out.println("[" + LocalDateTime.now() + "]" + " " + messagePacket.getMessage());
     }
 
 }

@@ -14,7 +14,7 @@ import java.net.InetAddress;
  *
  * @author Markovic
  */
-public class DataSender {
+public class MessageSender {
 
     private final String MULTICAST_ADDRESS = "228.28.28.28";
     private final int PORT = 6789;

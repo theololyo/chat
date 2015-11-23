@@ -11,5 +11,5 @@ package chat;
  */
 public interface Subscriber {
 
-    void update(String message);
+    void update(MessagePacket messagepacket);
 }

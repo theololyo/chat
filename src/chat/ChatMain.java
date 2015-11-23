@@ -29,11 +29,12 @@ public class ChatMain {
 			userName = JOptionPane.showInputDialog(null, "Enter your name", "Name", JOptionPane.QUESTION_MESSAGE);
 		}
 		
-                ChatGUI cg = new ChatGUI(userName);
+                GUISubscriber cg = new GUISubscriber(userName);
                 cg.setVisible(true);
-                UDPChatCommunicator n = new UDPChatCommunicator();
-                n.attach(cg);
-                n.attach(new SubscriberConsoleLogger());
+                UDPChatNotifier n = new UDPChatNotifier();
+                n.subscribe(cg);
+                n.subscribe(new ConsoleLoggerSubscriber());
+                n.subscribe(new FileLoggerSubscriber());
                 n.run();
 	}
 }
