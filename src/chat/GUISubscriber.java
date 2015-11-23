@@ -1,8 +1,6 @@
 package chat;
 
-import chat.MessagePacket;
-import chat.MessageSender;
-import chat.Subscriber;
+import loggerFactory.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -17,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import loggerFactory.Logger;
+import loggerFactory.LoggerFactory;
 
 /**
  * The main GUI for a simple chat application.
@@ -30,7 +30,8 @@ public class GUISubscriber extends JFrame implements Subscriber {
     private JButton mSendButton;
     private MessageSender mDs;
     private String mUser;
-    private boolean mDisplayErrors = false;
+    private boolean mDisplayErrors;
+    private final Logger mLocalLogger;
 
     /**
      * Creates a ChatGUI
@@ -38,6 +39,7 @@ public class GUISubscriber extends JFrame implements Subscriber {
      * @param userName the name to use in the chat
      */
     public GUISubscriber(String userName) {
+        mLocalLogger = new LoggerFactory().getFileLogger("FileLogger","Default");
         this.setTitle("Simple Chat - " + userName);
         mDs = new MessageSender();
         mUser = userName;
@@ -99,8 +101,10 @@ public class GUISubscriber extends JFrame implements Subscriber {
             mDs.broadcast(mUser, mMessageArea.getText());
             mMessageArea.setText("");
             mMessageArea.grabFocus();
+            throw new IOException();
 
         } catch (IOException e) {
+            mLocalLogger.writeLogg("Error: " + e.getMessage());
             this.error();
         }
     }
